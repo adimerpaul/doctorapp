@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:doctorapp/controller/carrusel_controller.dart';
+import 'package:doctorapp/view/home/opcion_inicio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,7 +37,7 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Welcome", style: TextStyle(color: Colors.white, fontSize: 16)),
+                    const Text("Bienvenido", style: TextStyle(color: Colors.white, fontSize: 16)),
                     const Text("User",
                         style: TextStyle(
                             color: Colors.white,
@@ -47,13 +48,20 @@ class HomePage extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2)
+                          )
+                        ]
                       ),
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: "Search doctor by name",
+                          hintText: "Buscar por nombre del doctor",
                           prefixIcon: const Icon(Icons.search),
                           border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20)
                         ),
                       ),
                     ),
@@ -92,6 +100,34 @@ class HomePage extends StatelessWidget {
                   }).toList(),
                 );
               }),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    OpcionInicio(
+                      label: "Doctores",
+                      onTap: () {
+                        // Acción para Perfil
+                      },
+                    ),
+                    OpcionInicio(
+                      label: "Especialidades",
+                      onTap: () {
+                        // Acción para Citas
+                      },
+                    ),
+                    // /farmacia
+                    OpcionInicio(
+                      label: "Farmacia",
+                      onTap: () {
+                        // Acción para Farmacia
+                      },
+                    ),
+                  ],
+                )
+              )
             ],
           ),
         ),
