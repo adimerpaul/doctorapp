@@ -1,11 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:doctorapp/controller/carrusel_controller.dart';
+import 'package:doctorapp/controller/doctor_controller.dart';
+import 'package:doctorapp/view/doctor/doctor_card.dart';
 import 'package:doctorapp/view/home/opcion_inicio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
-  final controller = Get.put(CarruselController());
+  final carruselController = Get.put(CarruselController());
 
   HomePage({super.key});
 
@@ -50,7 +52,7 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: const Color.fromRGBO(0, 0, 0, 0.1),
                             blurRadius: 4,
                             offset: const Offset(0, 2)
                           )
@@ -73,10 +75,10 @@ class HomePage extends StatelessWidget {
 
               // Carrusel
               Obx(() {
-                if (controller.loading.value) {
+                if (carruselController.loading.value) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (controller.carruseles.isEmpty) {
+                if (carruselController.carruseles.isEmpty) {
                   return const Center(child: Text('No hay imágenes'));
                 }
 
@@ -87,7 +89,7 @@ class HomePage extends StatelessWidget {
                     enlargeCenterPage: true,
                     viewportFraction: 0.9,
                   ),
-                  items: controller.carruseles.map((item) {
+                  items: carruselController.carruseles.map((item) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
@@ -127,7 +129,49 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 )
-              )
+              ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Doctores cercanos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    TextButton(
+                      onPressed: () {
+                        // Acción para ver todos los doctores
+                      },
+                      child: const Text('Ver todos', style: TextStyle(color: Color(0xFF00b0bd))),
+                    ),
+                  ],
+                )
+              ),
+          Obx(() {
+            final controller = Get.put(DoctorController());
+            if (controller.loading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (controller.doctores.isEmpty) {
+              return const Center(child: Text('No hay doctores disponibles'));
+            }
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: controller.doctores.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 160,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                ),
+                itemBuilder: (context, index) {
+                  return DoctorCard(doctor: controller.doctores[index]);
+                },
+              ),
+            );
+          })
             ],
           ),
         ),
