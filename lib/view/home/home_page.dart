@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:doctorapp/controller/carrusel_controller.dart';
 import 'package:doctorapp/controller/doctor_controller.dart';
+import 'package:doctorapp/view/doctor/detail_doctor.dart';
 import 'package:doctorapp/view/doctor/doctor_card.dart';
 import 'package:doctorapp/view/home/opcion_inicio.dart';
 import 'package:flutter/material.dart';
@@ -167,7 +168,15 @@ class HomePage extends StatelessWidget {
                   mainAxisSpacing: 12,
                 ),
                 itemBuilder: (context, index) {
-                  return DoctorCard(doctor: controller.doctores[index]);
+                  return DoctorCard(
+                      doctor: controller.doctores[index],
+                      onTap: () {
+                        // Get.toNamed('/doctor/${controller.doctores[index].id}');
+                        Get.to(() => DetailDoctor(
+                          doctor: controller.doctores[index],
+                        ));
+                      }
+                  );
                 },
               ),
             );
