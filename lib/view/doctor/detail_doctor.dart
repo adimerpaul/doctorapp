@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../addons/scaffold.dart';
 import '../../model/doctor_model.dart';
+import '../login/login_screen.dart';
 
 class DetailDoctor extends StatelessWidget {
   final Doctor doctor;
@@ -128,28 +130,6 @@ class DetailDoctor extends StatelessWidget {
                           _sectionTitle("Acerca del doctor"),
                           _textContent(doctor.acerca),
                           const SizedBox(height: 12),
-                          // _sectionTitle("Dirección"),
-                          // Text(doctor.direccion),
-                          // const SizedBox(height: 12),
-                          // _sectionTitle("Horario de atención"),
-                          // Text(doctor.horasDeTrabajo),
-                          // const SizedBox(height: 12),
-                          // _sectionTitle("Servicios"),
-                          // _textContent(doctor.servicio),
-                          // const SizedBox(height: 12),
-                          // _sectionTitle("Cuidado de la salud"),
-                          // _textContent(doctor.cuidado),
-                          // const SizedBox(height: 12),
-                          // _sectionTitle("Ubicación"),
-                          // ClipRRect(
-                          //   borderRadius: BorderRadius.circular(8),
-                          //   child: Image.network(
-                          //     'https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png',
-                          //     height: 100,
-                          //     width: double.infinity,
-                          //     fit: BoxFit.cover,
-                          //   ),
-                          // ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -241,7 +221,14 @@ class DetailDoctor extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Acción para agendar cita
+                    // Get.to(() => const LoginScreen(),)
+                    //   transition: Transition.rightToLeft,
+                    //   duration: const Duration(milliseconds: 300),
+                    // );
+                    Get.to(() => const LoginScreen(),
+                      transition: Transition.rightToLeft,
+                      duration: const Duration(milliseconds: 300),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
