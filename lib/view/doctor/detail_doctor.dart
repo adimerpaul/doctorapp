@@ -30,7 +30,7 @@ class DetailDoctor extends StatelessWidget {
                 children: [
                   Card(
                     margin: const EdgeInsets.only(bottom: 10),
-                    shadowColor: const Color.fromRGBO(0, 0, 0, 0.1),
+                    // shadowColor: const Color.fromRGBO(0, 0, 0, 0.1),
                     child: Row(
                       children: [
                         ClipRRect(
@@ -90,6 +90,7 @@ class DetailDoctor extends StatelessWidget {
                   const SizedBox(height: 20),
                   Card(
                     margin: const EdgeInsets.only(bottom: 10),
+                    // shadowColor: const Color.fromRGBO(0, 0, 0, 0.1),
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Column(
@@ -127,28 +128,85 @@ class DetailDoctor extends StatelessWidget {
                           _sectionTitle("Acerca del doctor"),
                           _textContent(doctor.acerca),
                           const SizedBox(height: 12),
-                          _sectionTitle("Dirección"),
-                          Text(doctor.direccion),
-                          const SizedBox(height: 12),
-                          _sectionTitle("Horario de atención"),
-                          Text(doctor.horasDeTrabajo),
+                          // _sectionTitle("Dirección"),
+                          // Text(doctor.direccion),
+                          // const SizedBox(height: 12),
+                          // _sectionTitle("Horario de atención"),
+                          // Text(doctor.horasDeTrabajo),
+                          // const SizedBox(height: 12),
+                          // _sectionTitle("Servicios"),
+                          // _textContent(doctor.servicio),
+                          // const SizedBox(height: 12),
+                          // _sectionTitle("Cuidado de la salud"),
+                          // _textContent(doctor.cuidado),
+                          // const SizedBox(height: 12),
+                          // _sectionTitle("Ubicación"),
+                          // ClipRRect(
+                          //   borderRadius: BorderRadius.circular(8),
+                          //   child: Image.network(
+                          //     'https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png',
+                          //     height: 100,
+                          //     width: double.infinity,
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _sectionTitle("Dirección"),
+                                    Text(
+                                      doctor.direccion,
+                                      style: const TextStyle(fontSize: 13),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    _sectionTitle("Horario de atención"),
+                                    Text(
+                                      doctor.horasDeTrabajo,
+                                      style: const TextStyle(fontSize: 13),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _sectionTitle("Ubicación"),
+                                    InkWell(
+                                      onTap: () async {
+                                        final url = Uri.parse(
+                                          'https://www.google.com/maps/search/?api=1&query=${doctor.lat},${doctor.lng}',
+                                        );
+                                        await launchUrl(url, mode: LaunchMode.externalApplication);
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.asset(
+                                          'assets/images/map_icon.png',
+                                          height: 100,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 12),
                           _sectionTitle("Servicios"),
                           _textContent(doctor.servicio),
                           const SizedBox(height: 12),
                           _sectionTitle("Cuidado de la salud"),
                           _textContent(doctor.cuidado),
-                          const SizedBox(height: 12),
-                          _sectionTitle("Ubicación"),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              'https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png',
-                              height: 100,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
                         ],
                       ),
                     ),
