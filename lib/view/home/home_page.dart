@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:doctorapp/controller/carrusel_controller.dart';
 import 'package:doctorapp/controller/doctor_controller.dart';
+import 'package:doctorapp/service/databasehelper.dart';
 import 'package:doctorapp/view/doctor/detail_doctor.dart';
 import 'package:doctorapp/view/doctor/doctor_card.dart';
 import 'package:doctorapp/view/home/opcion_inicio.dart';
@@ -9,9 +11,17 @@ import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   final carruselController = Get.put(CarruselController());
-
-  HomePage({super.key});
-
+  final userName = ''.obs;
+  HomePage({super.key}) {
+    cargarUsuario(); // cargar nombre al construir
+  }
+  void cargarUsuario() async {
+    final db = Databasehelper();
+    final user = await db.getCurrentUser();
+    if (user != null) {
+      userName.value = user.name;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -41,11 +51,17 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("Bienvenido", style: TextStyle(color: Colors.white, fontSize: 16)),
-                    const Text("User",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold)),
+                    Obx(() => AutoSizeText(
+                      userName.value.isNotEmpty ? userName.value : 'Usuario',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      minFontSize: 16,
+                      overflow: TextOverflow.ellipsis,
+                    )),
                     const SizedBox(height: 16),
                     Container(
                       decoration: BoxDecoration(

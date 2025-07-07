@@ -10,6 +10,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:http/http.dart' as http;
 
+import '../model/user_model.dart';
+
 class Databasehelper {
   static final Databasehelper _instance = Databasehelper._internal();
   static Database? _database;
@@ -97,5 +99,13 @@ class Databasehelper {
   Future<void> logout() async {
     final db = await database;
     await db.delete('users');
+  }
+  Future<UserModel?> getCurrentUser() async {
+    final db = await database;
+    final res = await db.query('users', limit: 1);
+    if (res.isNotEmpty) {
+      return UserModel.fromMap(res.first);
+    }
+    return null;
   }
 }

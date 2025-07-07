@@ -1,3 +1,4 @@
+import 'package:doctorapp/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,7 +9,8 @@ import '../login/login_screen.dart';
 class DetailDoctor extends StatelessWidget {
   final Doctor doctor;
 
-  const DetailDoctor({super.key, required this.doctor});
+  DetailDoctor({super.key, required this.doctor});
+  final authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +199,52 @@ class DetailDoctor extends StatelessWidget {
           ),
 
           // Botón inferior
-          Container(
+          // Container(
+          //   decoration: const BoxDecoration(
+          //     gradient: LinearGradient(
+          //       colors: [Color(0xFF00b0bd), Color(0xFF01d8c9)],
+          //     ),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(28),
+          //       topRight: Radius.circular(28),
+          //     ),
+          //   ),
+          //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text(
+          //         "\$${doctor.tarifa.toStringAsFixed(0)}",
+          //         style: const TextStyle(
+          //           color: Colors.white,
+          //           fontSize: 20,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       ElevatedButton(
+          //         onPressed: () {
+          //           // Get.to(() => const LoginScreen(),)
+          //           //   transition: Transition.rightToLeft,
+          //           //   duration: const Duration(milliseconds: 300),
+          //           // );
+          //           Get.to(() => LoginScreen(),
+          //             transition: Transition.rightToLeft,
+          //             duration: const Duration(milliseconds: 300),
+          //           );
+          //         },
+          //         style: ElevatedButton.styleFrom(
+          //           backgroundColor: Colors.white,
+          //           foregroundColor: const Color(0xFF00b0bd),
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(20),
+          //           ),
+          //         ),
+          //         child: const Text("Iniciar sesión para agendar"),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          Obx(() => Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF00b0bd), Color(0xFF01d8c9)],
@@ -219,12 +266,22 @@ class DetailDoctor extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                ElevatedButton(
+                authController.isLoggedIn.value
+                    ? TextButton(
                   onPressed: () {
-                    // Get.to(() => const LoginScreen(),)
-                    //   transition: Transition.rightToLeft,
-                    //   duration: const Duration(milliseconds: 300),
-                    // );
+                    // TODO: acción para agendar cita
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFF00b0bd),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text("Agendar"),
+                )
+                    : ElevatedButton(
+                  onPressed: () {
                     Get.to(() => LoginScreen(),
                       transition: Transition.rightToLeft,
                       duration: const Duration(milliseconds: 300),
@@ -238,10 +295,10 @@ class DetailDoctor extends StatelessWidget {
                     ),
                   ),
                   child: const Text("Iniciar sesión para agendar"),
-                ),
+                )
               ],
             ),
-          ),
+          ))
         ],
       ),
     );
