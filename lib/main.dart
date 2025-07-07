@@ -1,3 +1,4 @@
+import 'package:doctorapp/view/login/login_screen.dart';
 import 'package:doctorapp/view/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +29,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: MainScreen()
+        initialRoute: '/home',
+        getPages: [
+          GetPage(name: '/login', page: () => LoginScreen()),
+          GetPage(name: '/home', page: () => MainScreen()),
+        ],
+        // home: MainScreen()
         // debugShowCheckedModeBanner: false,
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../addons/scaffold.dart';
+// import '../../addons/scaffold.dart';
 import '../../model/doctor_model.dart';
 import '../login/login_screen.dart';
 
@@ -113,11 +113,11 @@ class DetailDoctor extends StatelessWidget {
                               InkWell(
                                 onTap: () async {
                                   final url = 'tel:${doctor.celular}';
-                                  if (await canLaunchUrl(Uri.parse(url))) {
+                                  // if (await canLaunchUrl(Uri.parse(url))) {
                                     await launchUrl(Uri.parse(url));
-                                  } else {
-                                    error(context, "No se pudo realizar la llamada");
-                                  }
+                                  // } else {
+                                  //   error(context, "No se pudo realizar la llamada");
+                                  // }
                                 },
                                 child: CircleAvatar(
                                   backgroundColor: Colors.orange.shade300,
@@ -225,7 +225,7 @@ class DetailDoctor extends StatelessWidget {
                     //   transition: Transition.rightToLeft,
                     //   duration: const Duration(milliseconds: 300),
                     // );
-                    Get.to(() => const LoginScreen(),
+                    Get.to(() => LoginScreen(),
                       transition: Transition.rightToLeft,
                       duration: const Duration(milliseconds: 300),
                     );

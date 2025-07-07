@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../controller/login_controller.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final LoginController controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -15,35 +18,45 @@ class LoginScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title: const Text("Login", style: TextStyle(color: Colors.white)),
+        title: const Text("Iniciar sesión", style: TextStyle(color: Colors.white)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
             const SizedBox(height: 20),
-            Image.asset('assets/images/login_icon.png', height: 160), // pon tu imagen aquí
+            Image.asset('assets/images/login_icon.png', height: 160),
             const SizedBox(height: 30),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Enter your email',
+            TextField(
+              controller: controller.emailController,
+              decoration: const InputDecoration(
+                labelText: 'Correo electrónico',
                 border: UnderlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
-            const TextField(
-              obscureText: true,
+            Obx(() => TextField(
+              controller: controller.passwordController,
+              obscureText: controller.showPassword.value,
               decoration: InputDecoration(
-                labelText: 'Password',
-                border: UnderlineInputBorder(),
+                labelText: 'Contraseña',
+                border: const UnderlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    controller.showPassword.value ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: () {
+                    controller.showPassword.toggle(); // temporal para mostrar/ocultar
+                  },
+                ),
               ),
-            ),
+            )),
             const SizedBox(height: 12),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: const Text("Forget Password ?", style: TextStyle(color: Colors.grey)),
+                child: const Text("¿Olvidaste tu contraseña?", style: TextStyle(color: Colors.grey)),
               ),
             ),
             const SizedBox(height: 12),
@@ -55,10 +68,8 @@ class LoginScreen extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(30),
               ),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Acción de login
-                },
+              child: Obx(() => ElevatedButton(
+                onPressed: controller.loading.value ? null : controller.loginUser,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
@@ -67,19 +78,21 @@ class LoginScreen extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: const Text("Login", style: TextStyle(fontSize: 16)),
-              ),
+                child: controller.loading.value
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text("Iniciar sesión", style: TextStyle(fontSize: 16, color: Color(0xFFf8f8f8))),
+              )),
             ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Don't have account? "),
+                const Text("¿No tienes una cuenta? "),
                 GestureDetector(
                   onTap: () {
-                    // Redirigir a registro
+                    // acción para registro
                   },
-                  child: const Text("Register Now", style: TextStyle(color: Colors.orange)),
+                  child: const Text("Regístrate", style: TextStyle(color: Colors.orange)),
                 ),
               ],
             ),
@@ -87,9 +100,7 @@ class LoginScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // Acción Google Sign-In
-                },
+                onPressed: () {}, // Google login
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
@@ -98,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: const Text("Continue with Google"),
+                child: const Text("Continuar con Google"),
               ),
             ),
           ],

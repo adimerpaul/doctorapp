@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void error(context, String message) {
+void errorScaffold(context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
@@ -10,7 +10,7 @@ void error(context, String message) {
     ),
   );
 }
-void success(context, String message) {
+void successScaffold(context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
