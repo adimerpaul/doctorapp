@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../controller/auth_controller.dart';
+import '../../model/user_model.dart';
 import '../../service/databasehelper.dart';
-import '../addons/scaffold.dart'; // si tienes el successScaffold/errorScaffold ahí
+import '../addons/scaffold.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -27,10 +29,13 @@ class LoginController extends GetxController {
 
     loading(true);
     final db = Databasehelper();
-    final success = await db.loginUser(email, password);
+    final UserModel? user = await db.loginUser(email, password);
     loading(false);
 
-    if (success) {
+    if (user != null) {
+      final authController = Get.find<AuthController>();
+      authController.setUser(user); // ✅ ACTUALIZAMOS LA SESIÓN GLOBAL
+
       successScaffold(Get.context!, 'Inicio de sesión exitoso');
       Get.offAllNamed('/home');
     } else {

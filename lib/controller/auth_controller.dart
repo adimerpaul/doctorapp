@@ -22,4 +22,16 @@ class AuthController extends GetxController {
       isLoggedIn.value = false;
     }
   }
+
+  void setUser(UserModel user) {
+    currentUser.value = user;
+    isLoggedIn.value = true;
+  }
+
+  Future<void> logout() async {
+    final db = Databasehelper();
+    await db.deleteUser();
+    currentUser.value = null;
+    isLoggedIn.value = false;
+  }
 }

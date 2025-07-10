@@ -36,17 +36,21 @@ class Databasehelper {
       version: 1,
       onCreate: (db, version) async {
         await db.execute('''
-          CREATE TABLE users (
-            id INTEGER PRIMARY KEY,
-            user_id TEXT,
-            name TEXT,
-            token TEXT
-          )
+            CREATE TABLE users (
+              id INTEGER PRIMARY KEY,
+              user_id TEXT,
+              name TEXT,
+              email TEXT,
+              token TEXT,
+              avatar TEXT,
+              role TEXT
+            )
+
         ''');
       },
     );
   }
-  Future<bool> loginUser(String email, String password) async {
+  Future<UserModel?> loginUser(String email, String password) async {
     try {
       final response = await http.post(
         Uri.parse('$url/login'),
@@ -56,8 +60,6 @@ class Databasehelper {
           'password': password,
         },
       );
-      // print('Response status: ${response.statusCode}');
-      // print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -68,26 +70,37 @@ class Databasehelper {
 
         await db.delete('users');
 
+        final userModel = UserModel(
+          userId: user['id'].toString(),
+          name: user['name'],
+          token: token,
+          email: user['email'],
+          avatar: user['avatar'],
+          role: user['role'],
+        );
+
         await db.insert(
           'users',
           {
-            'user_id': user['id'].toString(),
-            'name': user['name'],
-            'token': token,
+            'user_id': userModel.userId,
+            'name': userModel.name,
+            'token': userModel.token,
+            'email': userModel.email,
+            'avatar': userModel.avatar,
+            'role': userModel.role,
           },
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
 
-        return true;
+        return userModel;
       } else {
-        // print('Login fallido: ${response.body}');
-        return false;
+        return null;
       }
     } catch (e) {
-      // print('Error loginUser: $e');
-      return false;
+      return null;
     }
   }
+
   Future<String?> getStoredToken() async {
     final db = await database;
     final res = await db.query('users', limit: 1);
@@ -107,5 +120,9 @@ class Databasehelper {
       return UserModel.fromMap(res.first);
     }
     return null;
+  }
+  Future<void> deleteUser() async {
+    final db = await database;
+    await db.delete('users'); // o el nombre de tu tabla local
   }
 }

@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'controller/auth_controller.dart'; // 👈 Asegúrate de importar el AuthController
 
 Future<void> main() async {
-
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
   await dotenv.load(fileName: isProduction ? ".env.production" : ".env");
+
+  // 👇 Registrar AuthController globalmente
+  Get.put(AuthController());
 
   runApp(const MyApp());
 }
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        statusBarColor: Color(0xFF00b0bd),
+        statusBarColor: const Color(0xFF00b0bd),
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.light,
       ),
