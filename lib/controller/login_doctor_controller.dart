@@ -5,7 +5,7 @@ import '../../model/user_model.dart';
 import '../../service/databasehelper.dart';
 import '../addons/scaffold.dart';
 
-class LoginController extends GetxController {
+class LoginDoctorController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   var loading = false.obs;
@@ -14,11 +14,11 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    emailController.text = 'admin@gmail.com';
+    emailController.text = 'mahajan@gmail.com'; // Por defecto para pruebas
     passwordController.text = '123456';
   }
 
-  Future<void> loginUser() async {
+  Future<void> loginDoctor() async {
     final email = emailController.text.trim();
     final password = passwordController.text;
 
@@ -33,11 +33,15 @@ class LoginController extends GetxController {
     loading(false);
 
     if (user != null) {
-      final authController = Get.find<AuthController>();
-      authController.setUser(user);
+      if (user.role?.toLowerCase() == 'doctor') {
+        final authController = Get.find<AuthController>();
+        authController.setUser(user);
 
-      successScaffold(Get.context!, 'Inicio de sesión exitoso');
-      Get.offAllNamed('/home');
+        successScaffold(Get.context!, 'Inicio de sesión exitoso');
+        Get.offAllNamed('/home');
+      } else {
+        errorScaffold(Get.context!, 'El usuario no tiene permiso de doctor');
+      }
     } else {
       errorScaffold(Get.context!, 'Credenciales incorrectas');
     }
